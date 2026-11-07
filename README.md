@@ -44,7 +44,7 @@ All commands run in a terminal from the cloned folder.
 
 1. Get the code: `git clone https://github.com/NOP64/flex-ticker.git`, then `cd flex-ticker`.
 2. `bun install`
-3. Store the keys in the OS secure store: Keychain on macOS, Credential Manager on Windows, Secret Service on Linux (each command prompts for the key, so it never appears on the command line):
+3. Store the keys, here or in FlexDesigner after step 6 (see "Keys can also be entered" below). They go in the OS secure store: Keychain on macOS, Credential Manager on Windows, Secret Service on Linux (each command prompts for the key, so it never appears on the command line):
    1. `bun run key:set:finnhub` (Finnhub)
    2. `bun run key:set:massive` (Massive, optional)
    3. `bun run key:check` reports which keys are stored.
@@ -56,7 +56,7 @@ All commands run in a terminal from the cloned folder.
 
 To update, run `git pull`, repeat steps 4 to 6 and tap the bar.
 
-Keys can also be entered without a terminal: in FlexDesigner open the plugin settings for Flex Ticker, paste the key and press Save. It is stored in the same secure store and takes effect right away, with no restart. The `key:set` commands remain for terminal users.
+Keys can also be entered without a terminal: in FlexDesigner open the APPLICATION tab, pick the Flex Ticker chart icon in the left sidebar, paste the key and press Save. Remove deletes it. It is stored in the same secure store and takes effect right away, with no restart. The `key:set` commands remain for terminal users.
 
 To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`com.nop64.flexticker.darwin.arm64.flexplugin`, and the same for `darwin.x64`, `win32.x64`, `win32.arm64`, `linux.x64`, `linux.arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. Keys are entered on that computer in the Flex Ticker settings page in FlexDesigner.
 
@@ -305,3 +305,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 6. 2026-11-06: Install section notes that API key changes need a plugin restart.
 7. 2026-11-06: Per-OS package names follow the FlexDesigner pattern (com.nop64.flexticker.<os>.<arch>.flexplugin). Release 0.1.0 also carries com.nop64.flexticker.flexplugin, the name FlexGate looks for.
 8. 2026-11-06: In-app key page (FlexDesigner plugin settings, Flex Ticker). Keys save to the OS secure store and the feeds restart without a plugin restart. Install and key security text updated.
+9. 2026-11-06: Key page confirmed on the bar: Save and Remove for both keys work and take effect without a plugin restart. It is under the APPLICATION tab in FlexDesigner. Windows path on the key page no longer loses its backslashes.
