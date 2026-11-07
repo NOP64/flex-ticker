@@ -40,7 +40,11 @@ Frames rendered by the plugin itself, with mock quotes, at the bar's real 2170 x
 4. git and bun, only to build from source. The Releases page has ready packages, so a build is optional.
 
 ## Install
-There are two ways to install: download a ready package, or build from source.
+There are three ways to install: from the FlexGate catalog, from a package on the Releases page, or by building from source.
+
+### FlexGate catalog
+1. Open the [Flex Ticker listing on FlexGate](https://flexgate.enilinx.com/home/plugin/detail/fd9e76af91274fe5a3f3a1a28280718c) and press the blue GET button at the top right.
+2. Then follow steps 3 to 5 under Download below: drag the tape key onto a page, enter your Finnhub key, and tap the bar.
 
 ### Download
 1. Open the Releases page of this repository and download the file for your computer: `com.nop64.flexticker.darwin.arm64.flexplugin` (Apple silicon Mac), `darwin.x64` (Intel Mac), `win32.x64` or `win32.arm64` (Windows), `linux.x64` or `linux.arm64` (Linux).
@@ -328,3 +332,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 10. 2026-11-06: Settings section notes that API keys can be set in FlexDesigner or with the bun commands (same secure store), and that the FlexDesigner page is optional.
 11. 2026-11-06: Release 0.1.0 published with per-OS packages. Install section split into Download and Build from source.
 12. 2026-11-06: FlexGate accepted the plugin. Development section gains release steps (version bump, packages, plain-named asset, tag equals version).
+13. 2026-11-06: Install section lists the FlexGate catalog listing and its GET button as the first route.
