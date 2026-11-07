@@ -37,9 +37,19 @@ Frames rendered by the plugin itself, with mock quotes, at the bar's real 2170 x
 1. macOS (Windows and Linux builds exist but are untested), an ENIAC Flexbar, and FlexDesigner. FlexDesigner must be running for the bar to work: it runs the plugin and carries every frame and touch over USB. Add it to Login Items.
 2. A free Finnhub API key (live quotes). Required.
 3. A free Massive API key (history, charts beyond today, logos, indices). Optional; without it charts use only today's quotes.
-4. git and bun. There are no prebuilt downloads yet, so the plugin is built from this repository.
+4. git and bun, only to build from source. The Releases page has ready packages, so a build is optional.
 
 ## Install
+There are two ways to install: download a ready package, or build from source.
+
+### Download
+1. Open the Releases page of this repository and download the file for your computer: `com.nop64.flexticker.darwin.arm64.flexplugin` (Apple silicon Mac), `darwin.x64` (Intel Mac), `win32.x64` or `win32.arm64` (Windows), `linux.x64` or `linux.arm64` (Linux).
+2. Install it through FlexDesigner.
+3. In FlexDesigner, drag the Flex Ticker tape key onto a page and upload it to the bar.
+4. Enter your Finnhub key in FlexDesigner: APPLICATION tab, Flex Ticker chart icon in the left sidebar. Add the optional Massive key there too.
+5. Tap the bar once. FlexDesigner only starts drawing a key after it receives a touch.
+
+### Build from source
 All commands run in a terminal from the cloned folder.
 
 1. Get the code: `git clone https://github.com/NOP64/flex-ticker.git`, then `cd flex-ticker`.
@@ -309,3 +319,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 8. 2026-11-06: In-app key page (FlexDesigner plugin settings, Flex Ticker). Keys save to the OS secure store and the feeds restart without a plugin restart. Install and key security text updated.
 9. 2026-11-06: Key page confirmed on the bar: Save and Remove for both keys work and take effect without a plugin restart. It is under the APPLICATION tab in FlexDesigner. Windows path on the key page no longer loses its backslashes.
 10. 2026-11-06: Settings section notes that API keys can be set in FlexDesigner or with the bun commands (same secure store), and that the FlexDesigner page is optional.
+11. 2026-11-06: Release 0.1.0 published with per-OS packages. Install section split into Download and Build from source.
