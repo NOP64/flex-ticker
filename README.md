@@ -56,9 +56,9 @@ All commands run in a terminal from the cloned folder.
 
 To update, run `git pull`, repeat steps 4 to 6 and tap the bar.
 
-If you add or change an API key later, run `bun run plugin:restart` and tap the bar. The plugin reads the keys once, when it starts.
+Keys can also be entered without a terminal: in FlexDesigner open the plugin settings for Flex Ticker, paste the key and press Save. It is stored in the same secure store and takes effect right away, with no restart. The `key:set` commands remain for terminal users.
 
-To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`com.nop64.flexticker.darwin.arm64.flexplugin`, and the same for `darwin.x64`, `win32.x64`, `win32.arm64`, `linux.x64`, `linux.arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. That computer still needs the clone and bun to store keys with `bun run key:set:finnhub`.
+To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`com.nop64.flexticker.darwin.arm64.flexplugin`, and the same for `darwin.x64`, `win32.x64`, `win32.arm64`, `linux.x64`, `linux.arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. Keys are entered on that computer in the Flex Ticker settings page in FlexDesigner.
 
 ## Using the bar
 1. Scroll mode: tap to pause (a ▶ button appears left of the menu; tap it to resume). Drag to move the tape by hand.
@@ -166,7 +166,7 @@ On macOS the keys live in the login Keychain, never in a file the plugin reads o
 1. Encrypted at rest. Keychain items are encrypted with a key protected by the user's login password. Copying the disk or the home folder does not expose them.
 2. Locked with the user. The login keychain unlocks at login and is not readable by other user accounts.
 3. Access controlled per item. An item created with `security add-generic-password` lists which programs may read it without asking. The plugin reads it through `/usr/bin/security`, which is on that list, so there is no prompt; any other app that tries gets a macOS permission dialog.
-4. Never on the command line. `bun run key:set:finnhub` and `bun run key:set:massive` prompt for the key, so it never lands in shell history or the process list.
+4. Never on the command line. `bun run key:set:finnhub` and `bun run key:set:massive` prompt for the key, so it never lands in shell history or the process list. The settings page sends the key to the plugin over FlexDesigner's local connection, and on macOS the plugin hands it to the `security` tool on stdin, not as an argument.
 5. Never in the project or FlexDesigner. Keys are not in the repo, `settings.json`, the plugin's `config.json`, FlexDesigner profiles or the packed `.flexplugin`. Profiles and plugins can be shared without leaking them.
 6. Never in URLs or logs. Keys are sent in request headers (`X-Finnhub-Token`, `Authorization: Bearer`), so they do not show up in proxy or server URL logs. The log only says where the key came from (`Finnhub key from Keychain`). Logo images are fetched with the key only from `api.massive.com`.
 7. Easy to rotate or remove: `bun run key:set:finnhub` again to replace, `bun run key:delete:finnhub` to remove, or use Keychain Access (service `flex-ticker`, accounts `FINNHUB_API_KEY` and `MASSIVE_API_KEY`).
@@ -304,3 +304,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 5. 2026-11-06: Removed the broken release workflow (no prebuilt downloads). Description now names Massive.com.
 6. 2026-11-06: Install section notes that API key changes need a plugin restart.
 7. 2026-11-06: Per-OS package names follow the FlexDesigner pattern (com.nop64.flexticker.<os>.<arch>.flexplugin). Release 0.1.0 also carries com.nop64.flexticker.flexplugin, the name FlexGate looks for.
+8. 2026-11-06: In-app key page (FlexDesigner plugin settings, Flex Ticker). Keys save to the OS secure store and the feeds restart without a plugin restart. Install and key security text updated.

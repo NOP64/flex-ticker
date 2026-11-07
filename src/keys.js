@@ -39,4 +39,38 @@ function loadKey(name) {
   return { key, source: key ? ".env" : "none" }
 }
 
-module.exports = { loadKey }
+// Writing keys from the settings page. The value goes to the OS store only; it is never logged or echoed.
+// macOS: `security -i` reads the command from stdin, so the key never appears in the process list.
+const NAMES = ["FINNHUB_API_KEY", "MASSIVE_API_KEY"]
+const VALUE_RE = /^[A-Za-z0-9_.-]{8,200}$/
+
+function toStore(name, value) {
+  if (process.platform === "darwin") {
+    execFileSync("/usr/bin/security", ["-i"],
+      { input: `add-generic-password -U -s flex-ticker -a ${name} -w ${value}\n`, stdio: ["pipe", "ignore", "ignore"], timeout: 5000 })
+    if (fromStore(name) !== value) throw new Error("the key was not stored")
+    return
+  }
+  new (require("@napi-rs/keyring").Entry)("flex-ticker", name).setPassword(value)
+}
+
+function saveKey(name, value) {
+  if (!NAMES.includes(name)) throw new Error("unknown key")
+  if (!VALUE_RE.test(value)) throw new Error("that does not look like an API key (letters, digits, - _ . only)")
+  toStore(name, value)
+}
+
+function deleteKey(name) {
+  if (!NAMES.includes(name)) throw new Error("unknown key")
+  try {
+    if (process.platform === "darwin") {
+      execFileSync("/usr/bin/security", ["delete-generic-password", "-s", "flex-ticker", "-a", name], { stdio: "ignore", timeout: 5000 })
+    } else {
+      new (require("@napi-rs/keyring").Entry)("flex-ticker", name).deletePassword()
+    }
+  } catch {
+    // Already absent.
+  }
+}
+
+module.exports = { loadKey, saveKey, deleteKey, STORE, toStore }

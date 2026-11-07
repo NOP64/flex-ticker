@@ -32,7 +32,7 @@
             "version": "1.0.0"
         }
     ],
-    "configPage": "",
+    "configPage": "settings",
     "keyLibrary": {
         "title": "$PluginName",
         "style": {

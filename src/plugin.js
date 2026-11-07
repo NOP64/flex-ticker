@@ -14,7 +14,7 @@ const history = require("./history.js")
 const clock = require("./clock.js")
 const massive = require("./massive.js")
 const chart = require("./chart.js")
-const { loadKey } = require("./keys.js")
+const { loadKey, saveKey, deleteKey } = require("./keys.js")
 const { SETTINGS_FILE, FONTS, loadSettings, saveSettings, watchSettings, normalize } = require("./settings.js")
 
 const TAPE_CID = "com.nop64.flexticker.tape"
@@ -947,53 +947,92 @@ loadLogos()
 setInterval(loadLogos, 60000)
 indexQuotes()
 setInterval(indexQuotes, 60000) // picks up new daily bars and newly added index symbols
-const { key: apiKey, source: keySource } = finnhub.loadApiKey()
-if (!apiKey) {
-  feedStatus = "no Finnhub key (run bun run key:set:finnhub)"
-  logger.error(feedStatus)
-} else {
-  logger.info(`Finnhub key from ${keySource}`)
-  feedStatus = "waiting for quotes"
-  finnhub.startQuotes({
-    apiKey,
-    getSymbols: pollSymbols,
-    nextNameNeeded() {
-      // Fetch company names once; ETFs use the built-in table. "" marks a lookup with no result.
-      return allSymbols().find((sym) => !ETF_NAMES[sym] && !isIndex(sym) && config.names?.[sym] === undefined) || null
-    },
-    onQuote(q) {
-      const prev = latest.get(q.symbol)
-      latest.set(q.symbol, q)
-      try {
-        if (q.time) history.addTick(q.symbol, q.time * 1000, q.price)
-      } catch (e) {
-        logger.error(`history: ${e.message}`)
-      }
-      if (prev && prev.price !== q.price) {
-        flashes.set(q.symbol, { at: Date.now(), up: q.price > prev.price })
-        // When idling at 1 fps (page mode, paused or stopped scroll), start the fade now.
-        // A moving tape already runs at 20 fps, and an extra frame would jump it a step.
-        if (tape && (tape.s.mode === "page" || tape.paused || !tape.s.speed)) wake(tape)
-      }
-    },
-    onName(sym, name) {
-      config.names = { ...config.names, [sym]: name ? shortName(name) : "" }
-      saveConfig()
-    },
-    onStatus(s) {
-      if (latest.size === 0) feedStatus = s
-      logger.info(`quotes: ${s}`)
-    },
-  })
+let stopQuotes = null
+function startFeed() {
+  stopQuotes?.()
+  stopQuotes = null
+  const { key: apiKey, source: keySource } = finnhub.loadApiKey()
+  if (!apiKey) {
+    feedStatus = "no Finnhub key (add it in FlexDesigner settings, Flex Ticker)"
+    logger.error(feedStatus)
+  } else {
+    logger.info(`Finnhub key from ${keySource}`)
+    feedStatus = "waiting for quotes"
+    stopQuotes = finnhub.startQuotes({
+      apiKey,
+      getSymbols: pollSymbols,
+      nextNameNeeded() {
+        // Fetch company names once; ETFs use the built-in table. "" marks a lookup with no result.
+        return allSymbols().find((sym) => !ETF_NAMES[sym] && !isIndex(sym) && config.names?.[sym] === undefined) || null
+      },
+      onQuote(q) {
+        const prev = latest.get(q.symbol)
+        latest.set(q.symbol, q)
+        try {
+          if (q.time) history.addTick(q.symbol, q.time * 1000, q.price)
+        } catch (e) {
+          logger.error(`history: ${e.message}`)
+        }
+        if (prev && prev.price !== q.price) {
+          flashes.set(q.symbol, { at: Date.now(), up: q.price > prev.price })
+          // When idling at 1 fps (page mode, paused or stopped scroll), start the fade now.
+          // A moving tape already runs at 20 fps, and an extra frame would jump it a step.
+          if (tape && (tape.s.mode === "page" || tape.paused || !tape.s.speed)) wake(tape)
+        }
+      },
+      onName(sym, name) {
+        config.names = { ...config.names, [sym]: name ? shortName(name) : "" }
+        saveConfig()
+      },
+      onStatus(s) {
+        if (latest.size === 0) feedStatus = s
+        logger.info(`quotes: ${s}`)
+      },
+    })
+  }
 }
+startFeed()
 
 
 // ---------- history collector ----------
 
-const { key: massiveKey, source: massiveSource } = loadKey("MASSIVE_API_KEY")
-if (!massiveKey) {
-  logger.info("no Massive key (run bun run key:set:massive): charts use only today's quotes")
-} else if (history.isOpen()) {
-  logger.info(`Massive key from ${massiveSource}`)
-  massive.startCollector({ apiKey: massiveKey, getSymbols: allSymbols, log: (s) => logger.info(`history: ${s}`) })
+let stopCollector = null
+function startHistory() {
+  stopCollector?.()
+  stopCollector = null
+  const { key: massiveKey, source: massiveSource } = loadKey("MASSIVE_API_KEY")
+  if (!massiveKey) {
+    logger.info("no Massive key (add it in FlexDesigner settings): charts use only today's quotes")
+  } else if (history.isOpen()) {
+    logger.info(`Massive key from ${massiveSource}`)
+    stopCollector = massive.startCollector({ apiKey: massiveKey, getSymbols: allSymbols, log: (s) => logger.info(`history: ${s}`) })
+  }
 }
+startHistory()
+
+// ---------- key settings page ----------
+
+// Messages from ui/settings.vue. Keys go to the OS store and are never returned or logged; only whether one is stored.
+function keyStatus() {
+  const one = (name) => loadKey(name).source
+  return { finnhub: one("FINNHUB_API_KEY"), massive: one("MASSIVE_API_KEY"), feed: feedStatus }
+}
+
+plugin.on("ui.message", async (msg) => {
+  try {
+    const name = { finnhub: "FINNHUB_API_KEY", massive: "MASSIVE_API_KEY" }[msg?.which]
+    if (msg?.type === "saveKey") saveKey(name, String(msg.value || "").trim())
+    else if (msg?.type === "deleteKey") deleteKey(name)
+    else if (msg?.type !== "keyStatus") return { error: "unknown request" }
+    if (msg.type !== "keyStatus") {
+      logger.info(`keys: ${msg.type} ${msg.which}`)
+      if (msg.which === "finnhub") startFeed()
+      else startHistory()
+      await new Promise((r) => setTimeout(r, 2500)) // let the first request report
+    }
+    return keyStatus()
+  } catch (e) {
+    logger.error(`keys: ${e.message}`)
+    return { error: e.message }
+  }
+})
