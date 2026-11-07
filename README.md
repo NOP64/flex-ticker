@@ -284,6 +284,11 @@ Other options if the module fails on a system:
 2. Linux without a desktop keyring (minimal or headless systems): `systemd-creds encrypt` (tied to the machine, and the TPM when present), or `pass` (GPG encrypted).
 3. Last resort on any OS: a key file readable by the user only (`chmod 600`, or a Windows ACL for the user only), outside the repo.
 
+## Support
+1. Flex Ticker is provided as is, with no support. There is no support email and no response time is promised.
+2. Issues are open for bug reports and notes. They may go unanswered, and fixes are not guaranteed.
+3. Forks are welcome under the MIT license. If you need a change, fork the repository and make it.
+
 ## License
 MIT, see `LICENSE`. The same license as the FlexDesigner SDK, `@napi-rs/canvas` and `@napi-rs/keyring` it builds on.
 
@@ -293,3 +298,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 1. 2026-11-05: Concept, Phase 1 spike (directDraw, touch, fps, orientation, on-bar menu, Page mode) and Phase 2 live quotes (Finnhub, Keychain keys, groups, settings file, price flash, group filter, history database, Massive collector, drill-down chart, market clock).
 2. 2026-11-06: Packed and installed plugin, replug tap prompt, Nasdaq indices, group picker, company logos.
 3. 2026-11-06: Data folders chosen per OS (macOS, Windows, Linux) instead of a fixed macOS path. An environment variable override was rejected: FlexDesigner, started from Login Items, does not see shell variables.
+4. 2026-11-06: Support section (as is, no support, forks welcome). Repository description and topics set, Projects turned off.
