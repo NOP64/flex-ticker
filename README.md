@@ -45,7 +45,7 @@ All commands run in a terminal from the cloned folder.
 1. Get the code: `git clone https://github.com/NOP64/flex-ticker.git`, then `cd flex-ticker`.
 2. `bun install`
 3. Store the keys in the OS secure store: Keychain on macOS, Credential Manager on Windows, Secret Service on Linux (each command prompts for the key, so it never appears on the command line):
-   1. `bun run key:set` (Finnhub)
+   1. `bun run key:set:finnhub` (Finnhub)
    2. `bun run key:set:massive` (Massive, optional)
    3. `bun run key:check` reports which keys are stored.
 4. `bun run build`
@@ -56,7 +56,7 @@ All commands run in a terminal from the cloned folder.
 
 To update, run `git pull`, repeat steps 4 to 6 and tap the bar.
 
-To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`flex-ticker-darwin-arm64`, `darwin-x64`, `win32-x64`, `win32-arm64`, `linux-x64`, `linux-arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. That computer still needs the clone and bun to store keys with `bun run key:set`.
+To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`flex-ticker-darwin-arm64`, `darwin-x64`, `win32-x64`, `win32-arm64`, `linux-x64`, `linux-arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. That computer still needs the clone and bun to store keys with `bun run key:set:finnhub`.
 
 ## Using the bar
 1. Scroll mode: tap to pause (a ▶ button appears left of the menu; tap it to resume). Drag to move the tape by hand.
@@ -164,10 +164,10 @@ On macOS the keys live in the login Keychain, never in a file the plugin reads o
 1. Encrypted at rest. Keychain items are encrypted with a key protected by the user's login password. Copying the disk or the home folder does not expose them.
 2. Locked with the user. The login keychain unlocks at login and is not readable by other user accounts.
 3. Access controlled per item. An item created with `security add-generic-password` lists which programs may read it without asking. The plugin reads it through `/usr/bin/security`, which is on that list, so there is no prompt; any other app that tries gets a macOS permission dialog.
-4. Never on the command line. `bun run key:set` and `bun run key:set:massive` prompt for the key, so it never lands in shell history or the process list.
+4. Never on the command line. `bun run key:set:finnhub` and `bun run key:set:massive` prompt for the key, so it never lands in shell history or the process list.
 5. Never in the project or FlexDesigner. Keys are not in the repo, `settings.json`, the plugin's `config.json`, FlexDesigner profiles or the packed `.flexplugin`. Profiles and plugins can be shared without leaking them.
 6. Never in URLs or logs. Keys are sent in request headers (`X-Finnhub-Token`, `Authorization: Bearer`), so they do not show up in proxy or server URL logs. The log only says where the key came from (`Finnhub key from Keychain`). Logo images are fetched with the key only from `api.massive.com`.
-7. Easy to rotate or remove: `bun run key:set` again to replace, `bun run key:delete` to remove, or use Keychain Access (service `flex-ticker`, accounts `FINNHUB_API_KEY` and `MASSIVE_API_KEY`).
+7. Easy to rotate or remove: `bun run key:set:finnhub` again to replace, `bun run key:delete:finnhub` to remove, or use Keychain Access (service `flex-ticker`, accounts `FINNHUB_API_KEY` and `MASSIVE_API_KEY`).
 8. Windows and Linux: the same commands store keys in Credential Manager (encrypted with DPAPI, tied to the Windows login) or the Secret Service (GNOME Keyring or KWallet, unlocked at login) through `@napi-rs/keyring`. The log names the store the key came from.
 9. Fallback: a `.env` file in the plugin folder or repo root, for development only. It is plain text and git ignored.
 
@@ -271,7 +271,7 @@ How likely each package is to work:
 Before calling a Windows or Linux build supported, test on that OS with a Flexbar:
 
 1. The plugin starts and the log shows the key source and data folders.
-2. `bun run key:set`, `key:check` and `key:delete`.
+2. `bun run key:set:finnhub`, `key:check` and `key:delete:finnhub`.
 3. Touch coordinates, orientation, frame rate and the "key not alive" behavior.
 4. Font menu and logos.
 

@@ -14,11 +14,11 @@
     "snap": "node scripts/snap.mjs",
     "settings:open": "node scripts/settings-open.mjs",
     "plugin:pack:all": "node scripts/pack-all.mjs",
-    "key:set": "node scripts/key.mjs set finnhub",
+    "key:set:finnhub": "node scripts/key.mjs set finnhub",
     "key:set:massive": "node scripts/key.mjs set massive",
     "key:set:twelvedata": "node scripts/key.mjs set twelvedata",
     "key:check": "node scripts/key.mjs check",
-    "key:delete": "node scripts/key.mjs delete finnhub",
+    "key:delete:finnhub": "node scripts/key.mjs delete finnhub",
     "key:delete:massive": "node scripts/key.mjs delete massive",
     "key:delete:twelvedata": "node scripts/key.mjs delete twelvedata"
   },

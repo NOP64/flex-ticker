@@ -1,5 +1,5 @@
 // API keys. Lookup order:
-// 1. The OS secure store, service "flex-ticker", account = the key name (set with `bun run key:set`).
+// 1. The OS secure store, service "flex-ticker", account = the key name (set with `bun run key:set:finnhub`).
 //    macOS: login Keychain through /usr/bin/security, which the item's access list trusts, so no prompt.
 //    Windows: Credential Manager. Linux: Secret Service (GNOME Keyring, KWallet). Both via @napi-rs/keyring.
 // 2. The same name in .env in the plugin folder or its parent (repo root in dev).

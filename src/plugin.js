@@ -949,7 +949,7 @@ indexQuotes()
 setInterval(indexQuotes, 60000) // picks up new daily bars and newly added index symbols
 const { key: apiKey, source: keySource } = finnhub.loadApiKey()
 if (!apiKey) {
-  feedStatus = "no Finnhub key (run bun run key:set)"
+  feedStatus = "no Finnhub key (run bun run key:set:finnhub)"
   logger.error(feedStatus)
 } else {
   logger.info(`Finnhub key from ${keySource}`)
