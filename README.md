@@ -58,7 +58,7 @@ To update, run `git pull`, repeat steps 4 to 6 and tap the bar.
 
 If you add or change an API key later, run `bun run plugin:restart` and tap the bar. The plugin reads the keys once, when it starts.
 
-To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`flex-ticker-darwin-arm64`, `darwin-x64`, `win32-x64`, `win32-arm64`, `linux-x64`, `linux-arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. That computer still needs the clone and bun to store keys with `bun run key:set:finnhub`.
+To build for other computers, `bun run plugin:pack:all` writes one package per OS and CPU into `dist/` (`com.nop64.flexticker.darwin.arm64.flexplugin`, and the same for `darwin.x64`, `win32.x64`, `win32.arm64`, `linux.x64`, `linux.arm64`), each with only its own native binaries. Install the matching file through FlexDesigner on that computer. That computer still needs the clone and bun to store keys with `bun run key:set:finnhub`.
 
 ## Using the bar
 1. Scroll mode: tap to pause (a ▶ button appears left of the menu; tap it to resume). Drag to move the tape by hand.
@@ -303,3 +303,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 4. 2026-11-06: Support section (as is, no support, forks welcome). Repository description and topics set, Projects turned off.
 5. 2026-11-06: Removed the broken release workflow (no prebuilt downloads). Description now names Massive.com.
 6. 2026-11-06: Install section notes that API key changes need a plugin restart.
+7. 2026-11-06: Per-OS package names follow the FlexDesigner pattern (com.nop64.flexticker.<os>.<arch>.flexplugin). Release 0.1.0 also carries com.nop64.flexticker.flexplugin, the name FlexGate looks for.

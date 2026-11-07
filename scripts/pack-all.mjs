@@ -22,7 +22,7 @@ try {
   for (const [os, cpu] of TARGETS) {
     install([`--os=${os}`, `--cpu=${cpu}`])
     run(["--bun", "run", "flexcli", "plugin", "pack", "--path", PLUGIN])
-    fs.renameSync("com.nop64.flexticker.flexplugin", `dist/flex-ticker-${os}-${cpu}.flexplugin`)
+    fs.renameSync("com.nop64.flexticker.flexplugin", `dist/com.nop64.flexticker.${os}.${cpu}.flexplugin`)
   }
 } finally {
   install([])
