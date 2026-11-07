@@ -236,6 +236,13 @@ Flex Ticker is built around the free plans. Both providers sell paid plans that 
    8. `groups.js`: default groups, ETF and crypto names, group colors.
    9. `keys.js`: key loading from the OS secure store, then `.env`.
 6. Scripts: `key.mjs` (key commands per OS), `pack-all.mjs` (packages per OS), `settings-open.mjs`, `snap.mjs`.
+7. Releasing a new version. FlexGate takes the plugin from the GitHub release, so every update needs a new version and a release whose tag equals it:
+   1. Raise `version` in `com.nop64.flexticker.plugin/manifest.json` (the only place it is set).
+   2. Commit and push.
+   3. `bun run build`, then `bun run plugin:pack:all`.
+   4. Copy the Apple silicon package to the plain name FlexGate looks for: `cp dist/com.nop64.flexticker.darwin.arm64.flexplugin dist/com.nop64.flexticker.flexplugin`.
+   5. `gh release create <version> dist/*.flexplugin --repo NOP64/flex-ticker --title "Flex Ticker <version>" --notes "..."`. The tag is the bare version, for example `0.1.1`, with no `v`.
+   6. Check the assets: `gh release view <version> --repo NOP64/flex-ticker --json assets`.
 
 ## Backlog
 1. Start automatically. This is the biggest gap today: after a login, a restart of FlexDesigner, a plugin update or unplugging the bar, the tape stays blank until someone opens FlexDesigner and touches the bar.
@@ -320,3 +327,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 9. 2026-11-06: Key page confirmed on the bar: Save and Remove for both keys work and take effect without a plugin restart. It is under the APPLICATION tab in FlexDesigner. Windows path on the key page no longer loses its backslashes.
 10. 2026-11-06: Settings section notes that API keys can be set in FlexDesigner or with the bun commands (same secure store), and that the FlexDesigner page is optional.
 11. 2026-11-06: Release 0.1.0 published with per-OS packages. Install section split into Download and Build from source.
+12. 2026-11-06: FlexGate accepted the plugin. Development section gains release steps (version bump, packages, plain-named asset, tag equals version).
