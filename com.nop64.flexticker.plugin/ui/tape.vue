@@ -3,7 +3,7 @@
     <div class="text-subtitle-1 mb-2">{{ $t('Tape.UI.Title') }}</div>
     <p class="mb-2">{{ $t('Tape.UI.File') }}</p>
     <div>macOS: <code>~/Library/Application Support/flex-ticker/settings.json</code></div>
-    <div>Windows: <code>%APPDATA%\flex-ticker\settings.json</code></div>
+    <div>Windows: <code>%APPDATA%&#92;flex-ticker&#92;settings.json</code></div>
     <div>Linux: <code>~/.config/flex-ticker/settings.json</code></div>
     <p class="mt-4">{{ $t('Tape.UI.Live') }}</p>
     <p class="mt-2">{{ $t('Tape.UI.Menu') }}</p>
