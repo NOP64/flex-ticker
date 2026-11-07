@@ -76,6 +76,8 @@ Flex Ticker keeps its own settings file and data folder instead of using FlexDes
 2. Room for data. The market data the plugin can collect is large: two years of daily and minute bars per symbol, quote ticks, company logos, and later news, breadth and movers. That belongs in a database in the OS data folder (`history.sqlite`), not in a profile.
 3. Plain files. Settings can be edited in any text editor, backed up, copied to another computer or kept in version control.
 
+The one thing set through a FlexDesigner screen is the API keys. They are not in `settings.json`, because a file is the wrong place for a secret. Enter them in FlexDesigner (APPLICATION tab, Flex Ticker chart icon in the left sidebar) or from a terminal with `bun run key:set:finnhub` and `bun run key:set:massive`. Both write to the same OS secure store, so the FlexDesigner page is a convenience and nothing needs it. Terminal users, scripted setups and anyone who prefers the command line can skip it. Everything else, including the watchlist and look of the bar, stays in `settings.json` and the on-bar menu.
+
 The key's foreground and background settings in FlexDesigner have no effect. The plugin draws the whole 2170 x 60 bar as one full-screen image, so there is nothing for FlexDesigner to color.
 
 File: `settings.json` in the Flex Ticker config folder (see Data folders below), created with defaults on first run. `bun run settings:open` opens it in a text editor. Edits apply live. Invalid JSON keeps the last good settings and logs `settings file invalid`; invalid values fall back to defaults.
@@ -306,3 +308,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 7. 2026-11-06: Per-OS package names follow the FlexDesigner pattern (com.nop64.flexticker.<os>.<arch>.flexplugin). Release 0.1.0 also carries com.nop64.flexticker.flexplugin, the name FlexGate looks for.
 8. 2026-11-06: In-app key page (FlexDesigner plugin settings, Flex Ticker). Keys save to the OS secure store and the feeds restart without a plugin restart. Install and key security text updated.
 9. 2026-11-06: Key page confirmed on the bar: Save and Remove for both keys work and take effect without a plugin restart. It is under the APPLICATION tab in FlexDesigner. Windows path on the key page no longer loses its backslashes.
+10. 2026-11-06: Settings section notes that API keys can be set in FlexDesigner or with the bun commands (same secure store), and that the FlexDesigner page is optional.
