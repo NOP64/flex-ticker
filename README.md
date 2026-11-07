@@ -43,7 +43,7 @@ Frames rendered by the plugin itself, with mock quotes, at the bar's real 2170 x
 There are three ways to install: from the FlexGate catalog, from a package on the Releases page, or by building from source.
 
 ### FlexGate catalog
-1. Open the [Flex Ticker listing on FlexGate](https://flexgate.enilinx.com/home/plugin/detail/fd9e76af91274fe5a3f3a1a28280718c) and press the blue GET button at the top right.
+1. Open FlexDesigner first, then open the [Flex Ticker listing on FlexGate](https://flexgate.enilinx.com/home/plugin/detail/fd9e76af91274fe5a3f3a1a28280718c) and press the blue GET button at the top right. If FlexDesigner is closed, GET starts it and its window can hang on a spinner (a FlexDesigner startup error). The plugin is installed anyway: force quit FlexDesigner and open it again.
 2. Then follow steps 3 to 5 under Download below: drag the tape key onto a page, enter your Finnhub key, and tap the bar.
 
 ### Download
@@ -333,3 +333,4 @@ Market data is not covered by this license. Quotes, bars and logos come from Fin
 11. 2026-11-06: Release 0.1.0 published with per-OS packages. Install section split into Download and Build from source.
 12. 2026-11-06: FlexGate accepted the plugin. Development section gains release steps (version bump, packages, plain-named asset, tag equals version).
 13. 2026-11-06: Install section lists the FlexGate catalog listing and its GET button as the first route.
+14. 2026-11-06: Catalog install tested on macOS. FlexDesigner picks the OS and CPU specific release asset itself. GET with FlexDesigner closed can hang its window; README says to open it first.
