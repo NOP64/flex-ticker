@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.vscode
+*.log
+com.nop64.flexticker.plugin/backend
+logs
+node_modules
+node_modules/
+package-lock.json
+com.nop64.flexticker.plugin/config.json
+*.flexplugin
+dist/

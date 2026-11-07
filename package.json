@@ -1,0 +1,42 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c && cd com.nop64.flexticker.plugin/backend && bun install",
+    "dev": "npm-run-all plugin:unlink plugin:link -p plugin:watch plugin:debug",
+    "plugin:watch": "rollup -c -w --watch.onEnd=\"bun run plugin:restart\"",
+    "plugin:unlink": "bun --bun run flexcli plugin unlink --uuid com.nop64.flexticker --silent",
+    "plugin:link": "bun --bun run flexcli plugin link --path com.nop64.flexticker.plugin --uuid com.nop64.flexticker --start false",
+    "plugin:restart": "bun --bun run flexcli plugin restart --uuid=com.nop64.flexticker",
+    "plugin:debug": "bun --bun run flexcli plugin debug --uuid=com.nop64.flexticker | node scripts/clean-log.mjs",
+    "plugin:validate": "bun --bun run flexcli plugin validate --path com.nop64.flexticker.plugin",
+    "plugin:pack": "bun --bun run flexcli plugin pack --path com.nop64.flexticker.plugin",
+    "plugin:install": "bun --bun run flexcli plugin install --path ./com.nop64.flexticker.flexplugin --force",
+    "snap": "node scripts/snap.mjs",
+    "settings:open": "node scripts/settings-open.mjs",
+    "plugin:pack:all": "node scripts/pack-all.mjs",
+    "key:set": "node scripts/key.mjs set finnhub",
+    "key:set:massive": "node scripts/key.mjs set massive",
+    "key:set:twelvedata": "node scripts/key.mjs set twelvedata",
+    "key:check": "node scripts/key.mjs check",
+    "key:delete": "node scripts/key.mjs delete finnhub",
+    "key:delete:massive": "node scripts/key.mjs delete massive",
+    "key:delete:twelvedata": "node scripts/key.mjs delete twelvedata"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@eniac/flexcli": "^1.0.7",
+    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.0",
+    "glob": "^11.0.1",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^4.0.2"
+  },
+  "dependencies": {
+    "@eniac/flexdesigner": "^1.0.7",
+    "@napi-rs/canvas": "^1.1.0",
+    "@napi-rs/keyring": "^2.1.2"
+  }
+}

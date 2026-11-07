@@ -1,0 +1,78 @@
+{
+    "name": "Flex Ticker",
+    "uuid": "com.nop64.flexticker",
+    "version": "0.1.0",
+    "author": "NOP64",
+    "entry": "backend/plugin.cjs",
+    "description": "Stock ticker for Flexbar",
+    "repo": "https://github.com/NOP64/flex-ticker",
+    "sdk": {
+        "version": "1.0.7"
+    },
+    "software": {
+        "minimumVersion": "1.3.0"
+    },
+    "os": [
+        {
+            "platform": "mac",
+            "minimumVersion": "10.15"
+        },
+        {
+            "platform": "windows",
+            "minimumVersion": "10"
+        },
+        {
+            "platform": "linux",
+            "minimumVersion": ""
+        }
+    ],
+    "device": [
+        {
+            "name": "flexbar",
+            "version": "1.0.0"
+        }
+    ],
+    "configPage": "",
+    "keyLibrary": {
+        "title": "$PluginName",
+        "style": {
+            "icon": "mdi mdi-chart-line"
+        },
+        "children": [
+            {
+                "title": "$Tape.Title",
+                "tip": "$Tape.Tip",
+                "cid": "com.nop64.flexticker.tape",
+                "config": {
+                    "keyType": "directDraw",
+                    "platform": [
+                        "mac",
+                        "windows",
+                        "linux"
+                    ]
+                },
+                "style": {
+                    "icon": "mdi mdi-chart-line",
+                    "width": 2170
+                },
+                "data": {}
+            }
+        ]
+    },
+    "local": {
+        "en": {
+            "PluginName": "Flex Ticker",
+            "Tape": {
+                "Title": "Ticker Tape",
+                "Tip": "Full-width stock ticker. Settings: settings.json in the Flex Ticker config folder, or the bar's menu button.",
+                "UI": {
+                    "Title": "Settings file",
+                    "File": "All Flex Ticker settings (watchlist groups, mode, rows, font, speed, label, orientation) are in:",
+                    "Live": "Edit it in any text editor. Changes apply on the bar right away. Run `bun run settings:open` in the repo to open it.",
+                    "Menu": "For quick changes, tap the menu button at the right end of the bar. Done saves back to the file.",
+                    "Style": "The key's foreground and background settings in FlexDesigner have no effect: the plugin draws the whole bar itself."
+                }
+            }
+        }
+    }
+}
